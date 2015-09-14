@@ -158,7 +158,7 @@ public class PushPlugin extends CordovaPlugin {
     pushCachedExtras();
     gForeground = true;
     // REMOVE THESE NEXT TWO LINES IF YOU WANT NOTIFICATIONS TO STAY AFTER RESUMING
-    final NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+    final NotificationManager notificationManager = (NotificationManager) this.cordova.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
     notificationManager.cancelAll();
   }
 
