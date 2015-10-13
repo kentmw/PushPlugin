@@ -26,10 +26,10 @@ public class PushHandlerActivity extends Activity
 
     finish();
 
-    if (!isPushPluginActive) {
-      Log.v(TAG, "onCreate - reloading main activity because main activity was not active");
+    //if (!isPushPluginActive) {
+    //  Log.v(TAG, "onCreate - reloading main activity because main activity was not active");
       forceMainActivityReload();
-    }
+    //}
   }
 
   /**
