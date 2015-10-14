@@ -100,7 +100,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
-				.setSmallIcon(context.getApplicationInfo().icon)
+				/*.setSmallIcon(context.getApplicationInfo().icon)*/
+        .setSmallIcon(context.getResources().getIdentifier('small_icon', 'drawable', context.getPackageName());
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
 				.setTicker(extras.getString("title"))
