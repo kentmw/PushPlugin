@@ -9,10 +9,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import java.util.Random;
+import java.io.InputStream;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -97,11 +102,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 			} catch (NumberFormatException e) {}
 		}
 
+    Bitmap iconBitMap = GCMIntentService.getBitmapFromAsset(context, "www/res/icon/android/drawable/small_icon.png");
+    Icon icon = Icon.createWithBitmap(iconBitMap);
+
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
 				/*.setSmallIcon(context.getApplicationInfo().icon)*/
-        .setSmallIcon(context.getResources().getIdentifier("icon", "drawable", context.getPackageName()))
+        /*.setSmallIcon(context.getResources().getIdentifier("icon", "drawable", context.getPackageName()))*/
+        .setSmallIcon(icon)
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
 				.setTicker(extras.getString("title"))
@@ -150,4 +159,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.e(TAG, "onError - errorId: " + errorId);
 	}
 
+  public static Bitmap getBitmapFromAsset(Context context, String filePath) {
+    AssetManager assetManager = context.getAssets();
+
+    InputStream istr;
+    Bitmap bitmap = null;
+    try {
+      istr = assetManager.open(filePath);
+      bitmap = BitmapFactory.decodeStream(istr);
+    } catch (IOException e) {
+        // handle exception
+      Log.e(TAG, "Failed to get bitmap using filePath: " + filePath);
+    }
+
+    return bitmap;
+  }
 }
