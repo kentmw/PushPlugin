@@ -109,7 +109,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				.setAutoCancel(true);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      mBuilder.setSmallIcon(context.getResources().getIdentifier("secondary_icon", "drawable", context.getPackageName()))
+      mBuilder.setSmallIcon(context.getResources().getIdentifier("secondary_icon", "drawable", context.getPackageName()));
       setNotificationIconColor(extras.getString("color"), mBuilder);
     } else {
       mBuilder.setSmallIcon(context.getApplicationInfo().icon);
