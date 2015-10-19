@@ -102,7 +102,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
-        .setSmallIcon(context.getResources().getIdentifier("secondary_icon", "drawable", context.getPackageName()))
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
 				.setTicker(extras.getString("title"))
@@ -110,7 +109,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 				.setAutoCancel(true);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      mBuilder.setSmallIcon(context.getResources().getIdentifier("secondary_icon", "drawable", context.getPackageName()))
       setNotificationIconColor(extras.getString("color"), mBuilder);
+    } else {
+      mBuilder.setSmallIcon(context.getApplicationInfo().icon);
     }
 
 		String message = extras.getString("message");
@@ -165,7 +167,13 @@ public class GCMIntentService extends GCMBaseIntentService {
       }
     }
     if (iconColor != 0) {
-      mBuilder.setColor(iconColor);
+      // Not setting color because of error in PGB:
+      /*
+        [javac] Compiling 43 source files to /project/bin/classes
+        [javac] /project/src/com/plugin/gcm/GCMIntentService.java:168: error: cannot find symbol
+        [javac]       mBuilder.setColor(iconColor);
+      */
+      //mBuilder.setColor(iconColor);
     }
   }
 }
