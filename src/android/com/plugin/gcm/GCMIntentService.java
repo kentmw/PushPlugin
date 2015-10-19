@@ -9,9 +9,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -100,9 +99,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 			} catch (NumberFormatException e) {}
 		}
 
-    Drawable myDrawable = context.getResources().getDrawable(context.getApplicationInfo().icon);
-    Bitmap largeIcon = ((BitmapDrawable) myDrawable).getBitmap();
-
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
@@ -113,6 +109,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 				.setTicker(extras.getString("title"))
 				.setContentIntent(contentIntent)
 				.setAutoCancel(true);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      setNotificationIconColor(extras.getString("color"), mBuilder);
+    }
 
 		String message = extras.getString("message");
 		if (message != null) {
@@ -155,4 +155,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 	public void onError(Context context, String errorId) {
 		Log.e(TAG, "onError - errorId: " + errorId);
 	}
+
+  private void setNotificationIconColor(String color, NotificationCompat.Builder mBuilder) {
+    int iconColor = 0;
+    if (color != null) {
+      try {
+          iconColor = Color.parseColor(color);
+      } catch (IllegalArgumentException e) {
+          Log.e(TAG, "couldn't parse color from android options");
+      }
+    }
+    if (iconColor != 0) {
+      mBuilder.setColor(iconColor);
+    }
+  }
 }
