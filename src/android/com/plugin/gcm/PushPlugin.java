@@ -33,7 +33,6 @@ public class PushPlugin extends CordovaPlugin {
   private static String gSenderID;
   private static Bundle gCachedExtras = null;
   private static boolean gForeground = false;
-  private static boolean heartbeatStarted = false;
 
 	/**
 	 * Gets the application context from cordova's main activity.
@@ -81,7 +80,6 @@ public class PushPlugin extends CordovaPlugin {
 				sendExtras(gCachedExtras);
 				gCachedExtras = null;
 			}
-      startHeartbeat();
 		} else if (UNREGISTER.equals(action)) {
 
 			GCMRegistrar.unregister(getApplicationContext());
@@ -96,14 +94,6 @@ public class PushPlugin extends CordovaPlugin {
 		}
 		return result;
 	}
-
-  public void startHeartbeat() {
-    if (!heartbeatStarted) {
-      Intent intent = new Intent();
-      intent.setAction("com.plugin.mostlyepic.gcm.HeartbeatKeepAlive");
-      getApplicationContext().sendBroadcast(intent);
-    }
-  }
 
 	/*
 	 * Sends a json object to the client as parameter to a method which is defined in gECB.
